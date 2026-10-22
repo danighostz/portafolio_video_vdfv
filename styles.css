@@ -81,7 +81,7 @@ a { text-decoration: none; color: inherit; }
     padding: 100px 0 60px;
     background:
         linear-gradient(rgba(10,10,15,.82), rgba(10,10,15,.92)),
-        url('img/fondo.png') center center / cover no-repeat;
+        url('../img/fondo.png') center center / cover no-repeat;
     background-color: var(--bg);
 }
 
@@ -189,7 +189,7 @@ a { text-decoration: none; color: inherit; }
 }
 
 /* =========================================================
-   VIDEOS GRID 9:16 (con thumbnails visibles)
+   VIDEOS GRID 9:16 (con thumbnails)
    ========================================================= */
 .videos-grid {
     display: grid;
@@ -219,70 +219,45 @@ a { text-decoration: none; color: inherit; }
     overflow: hidden;
 }
 
-/* =========================================================
-   THUMBNAIL clickeable (imagen o portada generada + play)
-   ========================================================= */
+/* Thumbnail clickeable (imagen o placeholder con icono de play) */
 .video-card__thumb {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    border: none;
-    padding: 0;
-    background: #050508;
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    border: none; padding: 0;
+    background: #050508 center / cover no-repeat;
     cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: flex; align-items: center; justify-content: center;
     overflow: hidden;
 }
-
-/* Imagen de portada (YouTube y cualquier <img>) */
 .video-card__thumb img {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
     object-fit: cover;
-    object-position: center;
-    display: block;
     transition: transform .5s ease, opacity .3s ease;
-    opacity: .95;
-    z-index: 1;
+    opacity: .9;
 }
-.video-card__thumb:hover img {
-    transform: scale(1.05);
-    opacity: 1;
-}
-
-/* Overlay oscuro para resaltar el botón play */
+.video-card__thumb:hover img { transform: scale(1.05); opacity: 1; }
 .video-card__thumb::after {
     content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(180deg, rgba(0,0,0,.1), rgba(0,0,0,.5));
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(0,0,0,.15), rgba(0,0,0,.55));
     pointer-events: none;
-    z-index: 2;
 }
 
 /* Botón play circular */
 .video-card__play {
     position: relative;
-    z-index: 3;
-    width: 78px;
-    height: 78px;
+    z-index: 2;
+    width: 78px; height: 78px;
     border-radius: 50%;
     background: linear-gradient(135deg, var(--accent), var(--accent-2));
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: flex; align-items: center; justify-content: center;
     box-shadow: 0 10px 30px rgba(255,61,90,.6);
     transition: transform .25s ease;
     pointer-events: none;
 }
 .video-card__play svg {
-    width: 32px;
-    height: 32px;
+    width: 32px; height: 32px;
     fill: #fff;
     margin-left: 4px; /* centrar visualmente el triángulo */
 }
@@ -290,16 +265,22 @@ a { text-decoration: none; color: inherit; }
 
 /* Cuando ya está cargado el video (iframe activo) */
 .video-card__frame.is-loaded .video-card__thumb { display: none; }
-.video-card__frame iframe {
-    position: absolute;
-    inset: 0;
+.video-card__frame iframe,
+.video-card__frame blockquote,
+.video-card__frame .tiktok-embed {
     width: 100% !important;
     height: 100% !important;
     border: none;
-    display: block;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+}
+.video-card__frame blockquote.tiktok-embed { padding: 0; }
+.video-card__frame iframe {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
 }
 
-/* Info debajo de cada tarjeta */
 .video-card__info { padding: 20px 22px 24px; }
 .video-card__info h3 {
     font-size: 1.15rem; margin-bottom: 6px;
@@ -315,118 +296,6 @@ a { text-decoration: none; color: inherit; }
 .video-card__info p:last-child {
     color: var(--text-muted);
     font-size: .92rem;
-}
-
-/* =========================================================
-   PORTADAS GENERADAS (TikTok / Facebook) · 100% CSS
-   ========================================================= */
-.video-card__thumb--gen {
-    background: #050508;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: flex-end;
-    padding: 24px 22px;
-    text-align: left;
-    overflow: hidden;
-}
-
-.thumb__brand {
-    position: absolute;
-    top: 18px;
-    left: 18px;
-    z-index: 3;
-    padding: 5px 12px;
-    border-radius: 50px;
-    font-size: .72rem;
-    font-weight: 700;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    color: #fff;
-    background: rgba(255,255,255,.14);
-    border: 1px solid rgba(255,255,255,.25);
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
-}
-
-.thumb__title {
-    position: relative;
-    z-index: 3;
-    display: block;
-    color: #fff;
-    font-size: 1.4rem;
-    font-weight: 800;
-    line-height: 1.15;
-    margin-bottom: 6px;
-    text-shadow: 0 2px 20px rgba(0,0,0,.55);
-    max-width: 88%;
-}
-
-.thumb__sub {
-    position: relative;
-    z-index: 3;
-    display: block;
-    color: var(--accent-2);
-    font-size: .82rem;
-    font-weight: 600;
-    letter-spacing: .5px;
-    text-transform: uppercase;
-    text-shadow: 0 2px 12px rgba(0,0,0,.6);
-}
-
-/* Fondos únicos por video */
-.thumb--hoteles {
-    background:
-        linear-gradient(160deg, rgba(0,40,60,.4), rgba(0,0,0,.85)),
-        linear-gradient(135deg, #0f8bbf 0%, #063a5a 55%, #050508 100%);
-}
-.thumb--podcast {
-    background:
-        linear-gradient(160deg, rgba(30,0,50,.4), rgba(0,0,0,.85)),
-        linear-gradient(135deg, #8b3dff 0%, #3a0d6b 55%, #050508 100%);
-}
-.thumb--kevin {
-    background:
-        linear-gradient(160deg, rgba(60,0,0,.4), rgba(0,0,0,.85)),
-        linear-gradient(135deg, #ff3d5a 0%, #ff7a2f 55%, #050508 100%);
-}
-.thumb--xolo {
-    background:
-        linear-gradient(160deg, rgba(0,40,30,.4), rgba(0,0,0,.85)),
-        linear-gradient(135deg, #00b88a 0%, #ffb547 55%, #050508 100%);
-}
-.thumb--facebook {
-    background:
-        linear-gradient(160deg, rgba(0,0,40,.4), rgba(0,0,0,.85)),
-        linear-gradient(135deg, #1877f2 0%, #0a3a7a 55%, #050508 100%);
-}
-
-/* Icono decorativo de fondo (▶ grande semitransparente) */
-.video-card__thumb--gen::before {
-    content: '▶';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -65%);
-    font-size: 14rem;
-    line-height: 1;
-    color: rgba(255,255,255,.04);
-    font-weight: 900;
-    pointer-events: none;
-    z-index: 1;
-    font-family: system-ui, sans-serif;
-}
-
-/* Botón play centrado en portadas generadas */
-.video-card__thumb--gen .video-card__play {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -70%);
-    z-index: 3;
-}
-.video-card__thumb--gen:hover .video-card__play {
-    transform: translate(-50%, -70%) scale(1.1);
 }
 
 /* =========================================================
@@ -462,7 +331,7 @@ a { text-decoration: none; color: inherit; }
 .gallery__item:hover::after { opacity: 1; }
 
 /* =========================================================
-   NEGOCIOS Y PRODUCTOS (imágenes completas, sin recortes)
+   NEGOCIOS Y PRODUCTOS (imágenes COMPLETAS, sin recortes feos)
    ========================================================= */
 .section--negocios {
     background: linear-gradient(180deg, var(--bg) 0%, var(--bg-alt) 100%);
@@ -474,6 +343,7 @@ a { text-decoration: none; color: inherit; }
     gap: 28px;
 }
 
+/* Tarjeta: la imagen manda, altura automática */
 .gallery--3 .gallery__item {
     position: relative;
     display: flex;
@@ -485,7 +355,7 @@ a { text-decoration: none; color: inherit; }
     cursor: zoom-in;
     box-shadow: var(--shadow);
     transition: transform .3s, box-shadow .3s, border-color .3s;
-    aspect-ratio: auto;
+    aspect-ratio: auto; /* quitar el 4/5 heredado */
 }
 
 .gallery--3 .gallery__item:hover {
@@ -494,11 +364,12 @@ a { text-decoration: none; color: inherit; }
     border-color: rgba(255,61,90,.3);
 }
 
+/* IMAGEN: se muestra completa, sin recortes. Fondo oscuro de relleno */
 .gallery--3 .gallery__item > img {
     width: 100%;
     height: auto;
-    aspect-ratio: 1 / 1;
-    object-fit: contain;
+    aspect-ratio: 1 / 1;      /* todas iguales de proporción */
+    object-fit: contain;      /* ← CLAVE: contain, NO cover */
     object-position: center;
     background: #0a0a0f;
     transition: transform .5s ease;
@@ -513,6 +384,7 @@ a { text-decoration: none; color: inherit; }
     display: none;
 }
 
+/* Caption debajo */
 .gallery__caption {
     padding: 18px 20px 22px;
     background: var(--card);
@@ -606,10 +478,6 @@ a { text-decoration: none; color: inherit; }
     .hero__logo { width: 110px; height: 110px; }
     .videos-grid { grid-template-columns: 1fr; }
     .gallery--3 { grid-template-columns: 1fr; }
-    .video-card__play { width: 64px; height: 64px; }
-    .video-card__play svg { width: 26px; height: 26px; }
-    .thumb__title { font-size: 1.2rem; }
-    .video-card__thumb--gen::before { font-size: 10rem; }
 }
 
 /* =========================================================
